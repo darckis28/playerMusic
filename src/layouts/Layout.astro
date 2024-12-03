@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+    <title>Astro Basics</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style>
+  @font-face {
+    font-family: inter;
+    src: url(/fonts/Inter/Inter-VariableFont_opsz,wght.ttf);
+  }
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../assets/images/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: inter;
+  }
+</style>
