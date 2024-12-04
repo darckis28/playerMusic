@@ -70,16 +70,16 @@ import Pause from "../icons/Pause.astro";
 <script>
   import { sounds } from "../data/sounds";
   const play = document.getElementById("play"),
-    pause = document.getElementById("pause"),
+    pause: any = document.getElementById("pause"),
     duration = document.getElementById("duration"),
     progressTime = document.getElementById("progressTime"),
     progressBar = document.getElementById("progress"),
-    front = document.getElementById("frontMusic"),
+    front: any = document.getElementById("frontMusic"),
     nameMusic = document.getElementById("nameMusic"),
     artistMusic = document.getElementById("artistMusic"),
     next = document.getElementById("next"),
     back = document.getElementById("back"),
-    audio = document.getElementById("audio");
+    audio: any = document.getElementById("audio");
 
   let soundPalayer = 0;
 
@@ -88,12 +88,12 @@ import Pause from "../icons/Pause.astro";
   next.addEventListener("click", nextMusic);
   back.addEventListener("click", backMusic);
   function playMusic() {
-    audio.play();
+    audio?.play();
     pause.classList.replace("hidden", "block");
     play.classList.replace("block", "hidden");
   }
   function pauseMusic() {
-    audio.pause();
+    audio?.pause();
     pause.classList.replace("block", "hidden");
     play.classList.replace("hidden", "block");
   }
@@ -139,14 +139,14 @@ import Pause from "../icons/Pause.astro";
     playMusic();
   }
 
-  function formatToMinutesAndSeconds(seconds) {
+  function formatToMinutesAndSeconds(seconds: any) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   }
   function durationAudio() {
     audio.addEventListener("loadedmetadata", () => {
-      const durationMusic = audio.duration;
+      const durationMusic = audio?.duration;
       duration.innerHTML = formatToMinutesAndSeconds(durationMusic);
     });
   }

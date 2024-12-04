@@ -14,7 +14,7 @@ export const sounds = [
   {
     name: "Black Summoner",
     artist: "Retbear",
-    src: "/sonds/blackSummoner.mp3",
+    src: "/sonds/BlackSummoner.mp3",
     img: "/images/blackSummoner.webp",
   },
   {
