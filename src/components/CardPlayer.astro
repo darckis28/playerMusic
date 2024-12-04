@@ -1,30 +1,154 @@
 ---
 import cover1 from "../assets/images/cover-1.png";
-import audio1 from "../assets/audio/powder.mp3";
+import audio1 from "../assets/sonds/powder.mp3";
+import ProgressMusic from "./ProgressMusic.astro";
+import Play from "../icons/Play.astro";
+import Back from "../icons/Back.astro";
+import Next from "../icons/Next.astro";
+import Pause from "../icons/Pause.astro";
 ---
 
 <section class="p-5 bg-cardground/60 backdrop-blur-lg max-w-80 rounded-2xl">
   <img
+    id="frontMusic"
     src={cover1.src}
     alt="dadasasd"
-    class="rounded-2xl"
+    class="rounded-2xl aspect-square object-cover"
   />
-  <h1 class="mt-2 mb-1 text-center">Lost in the City Lights</h1>
-  <p class="text-center text-xs text-grayOne">Cosmo Sheldrake</p>
+  <h1
+    id="nameMusic"
+    class="mt-2 mb-1 text-center"
+  >
+    Lost in the City Lights
+  </h1>
+  <p
+    id="artistMusic"
+    class="text-center text-xs text-grayOne"
+  >
+    Cosmo Sheldrake
+  </p>
   <div class="flex justify-between">
-    <span class="text-xs text-grayOne">02:23</span>
-    <span class="text-xs text-grayOne">03:15</span>
+    <span
+      id="progressTime"
+      class="text-xs text-grayOne"
+      >00:00</span
+    >
+    <span
+      id="duration"
+      class="text-xs text-grayOne"
+      >03:15</span
+    >
   </div>
-  <input
-    type="range"
-    min="0"
-    max="100"
-    value="50"
-    class="w-full range"
-  />
-  <!-- <audio
+  <ProgressMusic />
+  <div class="flex justify-center gap-5 mt-4">
+    <button
+      id="back"
+      class="rounded-full"
+      ><Back />
+    </button>
+    <button
+      id="play"
+      class="bg-rose block rounded-full"
+      ><Play />
+    </button>
+    <button
+      id="pause"
+      class="bg-rose rounded-full hidden"
+      ><Pause />
+    </button>
+    <button
+      id="next"
+      class="rounded-full"
+      ><Next />
+    </button>
+  </div>
+  <audio
+    id="audio"
     src={audio1}
-    controls
-    autoplay
-  ></audio> -->
+  ></audio>
 </section>
+<script>
+  import { sounds } from "../data/sounds";
+  const play = document.getElementById("play"),
+    pause = document.getElementById("pause"),
+    duration = document.getElementById("duration"),
+    progressTime = document.getElementById("progressTime"),
+    progressBar = document.getElementById("progress"),
+    front = document.getElementById("frontMusic"),
+    nameMusic = document.getElementById("nameMusic"),
+    artistMusic = document.getElementById("artistMusic"),
+    next = document.getElementById("next"),
+    back = document.getElementById("back"),
+    audio = document.getElementById("audio");
+
+  let soundPalayer = 0;
+
+  play.addEventListener("click", playMusic);
+  pause.addEventListener("click", pauseMusic);
+  next.addEventListener("click", nextMusic);
+  back.addEventListener("click", backMusic);
+  function playMusic() {
+    audio.play();
+    pause.classList.replace("hidden", "block");
+    play.classList.replace("block", "hidden");
+  }
+  function pauseMusic() {
+    audio.pause();
+    pause.classList.replace("block", "hidden");
+    play.classList.replace("hidden", "block");
+  }
+  function backMusic() {
+    if (soundPalayer === 0) {
+      soundPalayer = sounds.length - 1;
+      updateMusic();
+    } else {
+      soundPalayer--;
+      updateMusic();
+    }
+  }
+  function nextMusic() {
+    if (soundPalayer === sounds.length - 1) {
+      soundPalayer = 0;
+      updateMusic();
+    } else {
+      soundPalayer++;
+      updateMusic();
+    }
+  }
+  audio.addEventListener("timeupdate", () => {
+    if (audio.currentTime === audio.duration) {
+      nextMusic();
+      return;
+    }
+    const currentTime = audio.currentTime;
+    const percentage = (audio.currentTime / audio.duration) * 100;
+    progressTime.innerHTML = formatToMinutesAndSeconds(currentTime);
+    progressBar.style.width = `${percentage}%`;
+
+    // currentTimeLabel.textContent = formatTime(audio.currentTime);
+  });
+  function updateMusic() {
+    durationAudio();
+    const { img, src, name, artist } = sounds[soundPalayer];
+    front.src = img;
+    nameMusic.innerHTML = name;
+    artistMusic.innerHTML = artist;
+    audio.src = src;
+    progressTime.innerHTML = "00:00";
+    progressBar.style.width = `0%`;
+    playMusic();
+  }
+
+  function formatToMinutesAndSeconds(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  }
+  function durationAudio() {
+    audio.addEventListener("loadedmetadata", () => {
+      const durationMusic = audio.duration;
+      duration.innerHTML = formatToMinutesAndSeconds(durationMusic);
+    });
+  }
+  updateMusic();
+</script>

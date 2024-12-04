@@ -6,6 +6,7 @@ export default {
       colors: {
         cardground: "#212936",
         grayOne: "#4D5562",
+        rose: "#C93B76",
       },
     },
   },
